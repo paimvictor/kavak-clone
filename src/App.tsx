@@ -1,15 +1,17 @@
 import React from 'react';
 import './App.css';
 import { CarList } from './components/CarList';
-import { Header } from './components/Header';
-
+import { NavBar } from './components/NavBar';
+import { Outlet } from "react-router-dom";
 
 function App() {
   
   return (
     <div> 
-      <Header/>
-      <CarList/>
+      <NavBar/>
+      <div id="detail">
+        <Outlet />
+      </div>
     </div>
   )
 }

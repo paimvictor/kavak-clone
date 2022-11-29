@@ -1,20 +1,32 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
+// import './index.css';
 import App from './App';
 import {
   createBrowserRouter,
   RouterProvider,
   Route,
 } from "react-router-dom";
-import Root from "./routes/root";
 import ErrorPage from "./components/ErrorPage";
+import { CarList } from "./components/CarList";
+import { SellForm } from "./components/SellForm";
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Root />,
+    element: <App />,
     errorElement: <ErrorPage />,
+    children: [
+      {
+        path: "venda-seu-carro/",
+        element: <SellForm />,
+      },
+      {
+        path: "comprar-um-carro/",
+        element: <CarList />,
+      }
+    ]
   },
 ]);
 
@@ -25,7 +37,5 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <RouterProvider router={router} />
-    <App />
-    
   </React.StrictMode>
 );
