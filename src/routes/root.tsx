@@ -1,4 +1,5 @@
 export default function Root() {
+  // Exemplo de implementação do Router
     return (
         <>
           <div id="sidebar">
