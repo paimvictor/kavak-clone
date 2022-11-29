@@ -1,7 +1,7 @@
-export const CarCard: React.FC<{name: string}> = (props) => {
+export const CarCard: React.FC<{name: string, model: string, price: number}> = (props) => {
     return <div>
         <h2>{props.name}</h2>
-        <p>2001 - 105km - Sao Paulo</p>
-        <p>R$ 5.000</p>
-    </div>
+        <p>{props.model}</p>
+        <p>R$ {props.price}</p>
+    </div> 
 }
