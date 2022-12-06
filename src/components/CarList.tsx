@@ -1,19 +1,63 @@
-import { CarCard } from './CarCard';
+import { useEffect, useState } from 'react';
 import './CarList.css';
+import axios from "axios";
+import authHeader from '../services/auth-header';
+import AuthService from '../services/auth';
+import Card from 'react-bootstrap/Card';
+import Button from 'react-bootstrap/Button';
+import { CardGroup, Container } from 'react-bootstrap';
+import Col from 'react-bootstrap/Col';
+import Row from'react-bootstrap/Row';
+
+
+const API_URL = 'http://localhost:8000/';
 
 export const CarList: React.FC<{}> = (props) => {
-    const cars = [
-        {id: 1, name: 'Jeep', model: '2018', price:1000.0},
-        {id: 2, name: 'Polo', model: '2018', price:1000.0},
-        {id: 3, name: 'Golf GTI Tunado', model: '2018', price:1000.0},
-      ]
-    
+
+  const [cars, setCars] = useState([]);
+
+  const fetchCars = async (): Promise<any> => {
+    try {
+      const { data } = await axios.get(API_URL + 'car/api', { headers: authHeader() });
+      const cars = data;
+      setCars(cars);
+      console.log(cars);
+    } catch (err: any) {
+      const currentUser = AuthService.getCurrentUser();
+      if (err.response.status === 401 && currentUser.access) {
+        AuthService.refreshAccessToken();
+      }
+      console.log(err);
+    };
+  }
+
+  const getColumnsForRow = () => {
+    let items = cars.map((car: any, index) => {
       return (
-        <div className="CarList">
-          {cars.map( (car) => {
-            console.log(car)
-            return <CarCard key={car.id} name={car.name} model={car.model} price={car.price}/>
-          })}
-        </div>
+        <Col>
+          <Card key={car.nome}>
+            <Card.Body>
+              <Card.Title>{car.nome}</Card.Title>
+              <Card.Text>{car.modelo}</Card.Text>
+              <Card.Text>{car.valor}</Card.Text>
+              <Button variant="primary">Comprar</Button>
+            </Card.Body>
+          </Card>
+        </Col>
       );
+    });
+    return items;
+  };
+
+  useEffect(() => {
+    fetchCars();
+  }, []);
+
+  return (
+    <Container>
+      <Row xs="1" md="4">
+        {getColumnsForRow()}
+      </Row>
+    </Container>
+  );
 }

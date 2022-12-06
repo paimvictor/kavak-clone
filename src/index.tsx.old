@@ -11,6 +11,8 @@ import ErrorPage from "./components/ErrorPage";
 import { CarList } from "./components/CarList";
 import { SellForm } from "./components/SellForm";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import RouteGuard from "./components/RouteGuard";
+
 
 const router = createBrowserRouter([
   {
