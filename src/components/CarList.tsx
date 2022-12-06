@@ -8,11 +8,21 @@ import Button from 'react-bootstrap/Button';
 import { CardGroup, Container } from 'react-bootstrap';
 import Col from 'react-bootstrap/Col';
 import Row from'react-bootstrap/Row';
+import { useNavigate } from 'react-router-dom';
 
 
 const API_URL = 'http://localhost:8000/';
 
 export const CarList: React.FC<{}> = (props) => {
+
+  let navigate = useNavigate();
+  useEffect(() => {
+    const currentUser = AuthService.getCurrentUser();
+    if (!(currentUser && currentUser.access)) {
+      navigate("/login");
+      return;
+    }
+    }, [navigate])
 
   const [cars, setCars] = useState([]);
 

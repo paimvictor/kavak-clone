@@ -1,8 +1,8 @@
-import React, { Component } from "react";
+import { Component } from "react";
 
 import UserService from "../services/user";
 
-export default class BoardModerator extends Component {
+export default class BoardAdmin extends Component {
   constructor(props) {
     super(props);
 

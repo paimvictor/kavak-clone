@@ -1,20 +1,29 @@
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import { client } from '../services/api';
-import { useState, useEffect, FormEvent } from 'react';
-import axios, { AxiosError } from 'axios';
+import { useState, FormEvent, useEffect } from 'react';
+import axios from 'axios';
 import authHeader from '../services/auth-header'
 import AuthService from '../services/auth';
+import { useNavigate } from 'react-router-dom';
 
 const API_URL = "http://localhost:8000/";
 
 
 export const SellForm: React.FC<{}> = () => {
+  
+  let navigate = useNavigate();
+  useEffect(() => {
+    const currentUser = AuthService.getCurrentUser();
+    if (!(currentUser && currentUser.access)) {
+      navigate("/login");
+      return;
+    }
+    }, [navigate])
+
   const [nome, setNome] = useState("");
   const [valor, setValor] = useState("");
   const [modelo, setModelo] = useState("");
   const [anoFabricacao, setAnoFabricacao] = useState("");
-  const [message, setMessage] = useState("");
   
   let handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -32,8 +41,6 @@ export const SellForm: React.FC<{}> = () => {
       if (res.status === 200) {
         setNome("");
         setValor("");
-      } else {
-        setMessage("Some error occured");
       }
     } catch (err: any) {
       const currentUser = AuthService.getCurrentUser();
@@ -42,7 +49,6 @@ export const SellForm: React.FC<{}> = () => {
         console.log(newAccessToken);
       }
       console.error(err);
-      setMessage("Some error occured");
     }
   };
 
